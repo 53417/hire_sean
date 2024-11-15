@@ -17,7 +17,7 @@ const appRoutes = [
   },
 ];
 
-appRoutes.forEach(route => {
+appRoutes.forEach((route) => {
   appRouter.use(route.path, route.router);
 });
 

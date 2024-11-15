@@ -10,7 +10,7 @@ const validateRequest = (schema: Schema) => {
       next();
     } else {
       const { details, message } = error;
-      const messages = details.map(i => i.message).join(",");
+      const messages = details.map((i) => i.message).join(",");
 
       console.log("error", messages);
       res.status(400).json({ error: messages, msg: message });

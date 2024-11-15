@@ -11,7 +11,7 @@ import { sign } from "../util/jwt";
 import { generateOTP, verifyOTP } from "../util/otp";
 import { sendOTP } from "../helpers/mailHelper";
 import { ApiError } from "../util/ApiError";
-const omitData = ["password"];
+import {SOMETHING_WENT_WRONG} from "../constants/errors.constants";
 
 export const registerUser = async (
   req: Request,
@@ -25,17 +25,17 @@ export const registerUser = async (
       mobile: user.mobile,
     });
     if (userExist) {
-      throw new ApiError(400, "Email or Mobile is alredy used");
+      throw new ApiError(500, SOMETHING_WENT_WRONG);
     }
     user = await createUser(user);
-    const userData = omit(user?.toJSON(), omitData);
+    const userData = omit(user?.toJSON(), ["password"]);
     const accessToken = sign({ ...userData });
 
     return res.status(200).json({
       data: userData,
       error: false,
       accessToken,
-      msg: "User registered successfully",
+      msg: "Registration successful",
     });
   } catch (err) {
     next(err);
@@ -52,14 +52,14 @@ export const loginUser = async (
 
     const user = await findOneUser({ email });
     if (!user) {
-      throw new ApiError(400, "Email id is incorrect");
+      throw new ApiError(500, SOMETHING_WENT_WRONG);
     }
 
     const validPassword = await validatePassword(user.email, password);
     if (!validPassword) {
-      throw new ApiError(400, "Password is incorrect");
+      throw new ApiError(500, SOMETHING_WENT_WRONG);
     }
-    const userData = omit(user?.toJSON(), omitData);
+    const userData = omit(user?.toJSON(), ["password"]);
     const accessToken = sign({ ...userData });
 
     return res.status(200).json({

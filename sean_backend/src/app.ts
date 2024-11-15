@@ -1,6 +1,6 @@
 import express from "express";
 import logger from "morgan";
-import {dbSync} from "./db/connection";
+import { dbSync } from "./database/connection";
 import cors from "cors";
 import { customRequest } from "./types/customDefinition";
 import { deserializeUser } from "./middleware";
@@ -34,7 +34,7 @@ app.get("/api/", (req: customRequest, res) => {
 });
 
 /**
- * route to sync db
+ * route to sync database
  */
 app.patch("/api/sync", async (req, res) => {
   try {

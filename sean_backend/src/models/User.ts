@@ -1,6 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { compareSync } from "../util/encrypt";
-import sequelizeConnection from "../db/connection";
+import sequelizeConnection from "../database/connection";
 
 class User extends Model {
   public id!: number;
